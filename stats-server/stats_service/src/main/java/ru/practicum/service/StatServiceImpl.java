@@ -28,10 +28,11 @@ public class StatServiceImpl implements StatService {
         statRepository.save(hit);
         log.info("Информация по endpoint = {} сохранена", hit.getUri());
     }
+
     @Override
     public List<HitResponseDto> getAllStatistic(LocalDateTime start, LocalDateTime end, boolean unique, List<String> uris) {
         Sort sort = Sort.by(Sort.Direction.DESC,"uri");
-        if(uris == null) {
+        if (uris == null) {
             return statRepository.findAll(sort)
                     .stream()
                     .map((Hit hit) -> HitMapper.toHitResponseDto(hit, this.statRepository.count())).collect(Collectors.toList());
