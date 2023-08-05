@@ -14,6 +14,7 @@ import java.util.List;
 public interface StatRepository extends JpaRepository<Hit, Long> {
 
     Long countHitsByUriIsNotIn(Collection<String> uri);
+
     List<Hit> findDistinctByUriNotIn(List<String> uri);
 
     @Query("SELECT new ru.practicum.HitResponseDto(h.app, h.uri, COUNT(h)) " +
