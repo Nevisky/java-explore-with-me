@@ -29,11 +29,11 @@ public class StatsClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> saveEvent (HitDto hitDto) {
+    public ResponseEntity<Object> saveEvent(HitDto hitDto) {
         return post("/hit", hitDto);
     }
 
-    public ResponseEntity<Object> getAllStatistic (LocalDateTime start, LocalDateTime end, Boolean unique, List<String> uris) {
+    public ResponseEntity<Object> getAllStatistic(LocalDateTime start, LocalDateTime end, Boolean unique, List<String> uris) {
         Map<String, Object> parameters = Map.of(
                 "start", start,
                 "end", end,
@@ -42,7 +42,7 @@ public class StatsClient extends BaseClient {
         return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 
-    public ResponseEntity<Object> getStatisticWithUniqueIps (LocalDateTime start, LocalDateTime end, Boolean unique) {
+    public ResponseEntity<Object> getStatisticWithUniqueIps(LocalDateTime start, LocalDateTime end, Boolean unique) {
         Map<String, Object> parameters = Map.of(
                 "start", start,
                 "end", end,
@@ -50,7 +50,7 @@ public class StatsClient extends BaseClient {
         return get("/stats?start={start}&end={end}&unique={unique}", parameters);
     }
 
-    public ResponseEntity<Object> getStatisticWithOnlyUris (LocalDateTime start, LocalDateTime end, List<String> uris) {
+    public ResponseEntity<Object> getStatisticWithOnlyUris(LocalDateTime start, LocalDateTime end, List<String> uris) {
         Map<String, Object> parameters = Map.of(
                 "start", start,
                 "end", end,
