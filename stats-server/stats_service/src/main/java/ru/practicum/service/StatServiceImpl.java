@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.HitDto;
 import ru.practicum.HitResponseDto;
 import ru.practicum.mapper.HitMapper;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class StatServiceImpl implements StatService {
 
 
@@ -28,7 +30,7 @@ public class StatServiceImpl implements StatService {
         statRepository.save(hit);
         log.info("Информация по endpoint = {} сохранена", hit.getUri());
     }
-
+   @Transactional(readOnly = true)
     @Override
     public List<HitResponseDto> getAllStatistic(LocalDateTime start, LocalDateTime end, boolean unique, List<String> uris) {
         Sort sort = Sort.by(Sort.Direction.DESC,"uri");
