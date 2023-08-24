@@ -48,12 +48,8 @@ public class EventServiceImpl implements EventService {
     private final LocationRepository locationRepository;
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
-    private final CategoryRepository categoryRepository;;
-    private final String URI = "/events";
+    private final CategoryRepository categoryRepository;
     private final StatsClient client;
-    public static final String START = "1900-01-01 01:01:01";
-
-    public static final String END = "2100-01-01 01:01:01";
 
     public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -243,7 +239,7 @@ public class EventServiceImpl implements EventService {
         LocalDateTime start;
 
         if (categories == null || categories.isEmpty()) {
-            categories = categoryRepository.findAll().stream().map(Category::getId).collect(Collectors.toList());;
+            categories = categoryRepository.findAll().stream().map(Category::getId).collect(Collectors.toList());
         }
         if (startLocal != null) {
             start = startLocal;
@@ -282,7 +278,7 @@ public class EventServiceImpl implements EventService {
         if (event.getState() != EventState.PUBLISHED) {
             throw new ObjectNotFoundException("Событие не опубликовано");
         }
-        client.postHit(request.getRequestURI(),request.getRemoteAddr());
+        client.postHit(request.getRequestURI(), request.getRemoteAddr());
       event.setViews(client.getViews(request.getRequestURI()));
       eventRepository.save(event);
         return EventMapper.toEventFullDto(event);

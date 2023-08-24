@@ -24,10 +24,12 @@ public class ErrorResponse {
 
     private String message;
 
-    public ErrorResponse() {timestamp = new Date();}
+    public ErrorResponse() {
+        timestamp = new Date();
+    }
+
     public ErrorResponse(HttpStatus httpStatus, String message) {
         this();
-
         this.code = httpStatus.value();
         this.status = httpStatus.name();
         this.message = message;

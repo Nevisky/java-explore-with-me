@@ -20,7 +20,7 @@ public class StatController {
     @PostMapping("/hit")
     public ResponseEntity<HitDto> createHit(@RequestBody HitDto hitDto) {
         log.info("Создан запрос на сохранение информации к эндпоинту");
-        return new ResponseEntity<>( service.addHit(hitDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.addHit(hitDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/stats")

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.HitDto;
@@ -50,15 +51,15 @@ public class StatsClient {
     }
 
     public Long getViews(String uri) {
-        List<String> uris = new ArrayList();
+        List<String> uris = new ArrayList<>();
         uris.add(uri);
-        Long views = 0L;
+        long views = 0L;
 
         try {
             List<HitResponseDto> response = mapper.convertValue(restTemplate.getForObject("/stats?start=" + START + "&end=" + END + "&uris=" + uri + "&unique=true", List.class), new TypeReference<List<HitResponseDto>>() {});
             log.info("response = {}", response);
             log.info("1stats = {}", response.get(0));
-            views = Long.valueOf(response.get(0).getHits());
+            views = (long) response.get(0).getHits();
         } catch (Exception ex) {
             log.error("error", ex);
             throw new RuntimeException("Error in Stats service");
