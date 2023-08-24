@@ -11,11 +11,12 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString
 public class HitResponseDto {
 
     String app;
 
     String uri;
 
-    Long hits;
+    int hits;
 }
