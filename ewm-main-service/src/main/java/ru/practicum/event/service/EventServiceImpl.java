@@ -171,7 +171,9 @@ public class EventServiceImpl implements EventService {
         if (!user.equals(event.getInitiator())) {
             throw new ConflictException(String.format("Пользователь с ID = %d не является инициатором события", userId));
         }
-            return EventMapper.toEventFullDto(EventMapper.toEventFullDto(event), updateEventUserRequest);
+        EventFullDto eventFullDto = EventMapper.toEventFullDto(EventMapper.toEventFullDto(event), updateEventUserRequest);
+        eventFullDto.setCategory(updateEventUserRequest.getCategoryDto() != null ? categoryService.findCategoryById(updateEventUserRequest.getCategoryDto()) : CategoryMapper.toCategoryDto(event.getCategory()));
+            return eventFullDto;
 
     }
 

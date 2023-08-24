@@ -19,8 +19,6 @@ import java.time.format.DateTimeFormatter;
 public class EventMapper {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public static CategoryService categoryService;
-
     public static Event toEvent(EventFullDto eventFullDto, User user, EventState state) {
         return Event.builder()
                 .id(eventFullDto.getId())
@@ -100,7 +98,6 @@ public class EventMapper {
         return EventFullDto.builder()
                 .id(eventFullDto.getId())
                 .annotation(updateEventUserRequest.getAnnotation() != null ? updateEventUserRequest.getAnnotation() : eventFullDto.getAnnotation())
-                .category(updateEventUserRequest.getCategoryDto() != null ? categoryService.findCategoryById(updateEventUserRequest.getCategoryDto()) : eventFullDto.getCategory())
                 .description(updateEventUserRequest.getDescription() != null ? updateEventUserRequest.getDescription() : eventFullDto.getDescription())
                 .eventDate(updateEventUserRequest.getEventDate() != null ? updateEventUserRequest.getEventDate() : eventFullDto.getEventDate())
                 .location(updateEventUserRequest.getLocation() != null ? updateEventUserRequest.getLocation() : eventFullDto.getLocation())
