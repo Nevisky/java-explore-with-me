@@ -13,6 +13,7 @@ public interface StatRepository extends JpaRepository<Hit, Long> {
     @Query("select distinct s.uri " +
             "from Hit as s")
     List<String> getDistinctUri();
+
     @Query(value = "select t.uri " +
             "from ( select distinct on (s.ip) s.uri from HITS as s " +
             "where s.uri in (?1) " +
