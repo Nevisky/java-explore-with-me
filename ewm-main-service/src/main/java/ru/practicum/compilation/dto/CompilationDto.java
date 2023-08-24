@@ -4,6 +4,7 @@ import lombok.*;
 import ru.practicum.event.dto.EventShortDto;
 
 import java.util.List;
+
 @Getter
 @Setter
 @Builder
