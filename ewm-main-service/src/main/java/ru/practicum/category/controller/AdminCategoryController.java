@@ -22,7 +22,7 @@ public class AdminCategoryController {
     private final CategoryService categoryService;
 
     @PostMapping()
-    public ResponseEntity<CategoryDto> addCategory (@Valid @RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<CategoryDto> addCategory(@Valid @RequestBody CategoryDto categoryDto) {
         log.info("Запрос на создание категории");
         return new ResponseEntity<>(categoryService.addCategory(categoryDto), HttpStatus.CREATED);
     }

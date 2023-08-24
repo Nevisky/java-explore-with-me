@@ -23,6 +23,7 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
+
     @PostMapping("{userId}/events")
     @ResponseStatus(HttpStatus.CREATED)
     private EventFullDto addEvent(@Valid @RequestBody NewEventDto newEventDto,

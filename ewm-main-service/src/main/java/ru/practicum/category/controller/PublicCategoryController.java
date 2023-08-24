@@ -10,7 +10,6 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
-
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -18,6 +17,7 @@ import java.util.List;
 public class PublicCategoryController {
 
     private final CategoryService categoryService;
+
     @GetMapping
     public List<CategoryDto> findAllCategories(@RequestParam(name = "from", defaultValue = "0")
                                                    @PositiveOrZero int from,

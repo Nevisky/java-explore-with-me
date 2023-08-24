@@ -25,8 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     public User validateUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(
-                ()-> new ObjectNotFoundException(String.format("Пользователя с id = %d не существует", userId)));
+        return userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException(String.format("Пользователя с id = %d не существует", userId)));
     }
 
     @Override

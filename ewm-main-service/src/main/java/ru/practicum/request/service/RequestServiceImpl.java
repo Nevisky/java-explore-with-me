@@ -64,7 +64,7 @@ public class RequestServiceImpl implements RequestService {
                 }
             }
         }
-        if (event.getConfirmedRequests() >= event.getParticipantLimit() && event.getParticipantLimit() !=0) {
+        if (event.getConfirmedRequests() >= event.getParticipantLimit() && event.getParticipantLimit() != 0) {
             throw new ConflictException("Превышен лимит участников");
         }
         request.setEvent(event);

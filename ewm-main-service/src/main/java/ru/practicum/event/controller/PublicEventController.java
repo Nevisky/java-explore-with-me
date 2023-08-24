@@ -38,6 +38,7 @@ public class PublicEventController {
         return eventService.findAllEventsByText(text, categories, paid, startLocal, endLocal, onlyAvailable, sortParam, from, size,request);
 
     }
+
     @GetMapping("{eventId}")
     public EventFullDto findEventById(@PathVariable("eventId") Long eventId, HttpServletRequest request) {
         return eventService.findEventById(eventId, request);

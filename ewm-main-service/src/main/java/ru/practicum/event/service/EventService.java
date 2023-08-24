@@ -21,6 +21,7 @@ public interface EventService {
     Event validatedEvent(Long eventId);
 
     EventFullDto patchDataEventAndState(UpdateEventAdminRequest updateEventAdminRequest, Long eventsId);
+
     void updateConfirmedRequest(int confirmedRequest, Long eventId);
 
     List<EventFullDto> getAllEvents(List<Long> users, List<EventState> states, List<Long> categories, LocalDateTime startLocal, LocalDateTime endLocal, Integer from, Integer size);

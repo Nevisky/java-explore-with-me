@@ -55,8 +55,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event validatedEvent(Long eventId) {
-        return eventRepository.findById(eventId).orElseThrow(
-                ()-> new ObjectNotFoundException(String.format("События с id = %d не существует", eventId)));
+        return eventRepository.findById(eventId).orElseThrow(() -> new ObjectNotFoundException(String.format("События с id = %d не существует", eventId)));
 
     }
 
@@ -99,6 +98,7 @@ public class EventServiceImpl implements EventService {
         }
         return event;
     }
+
     @Override
     public EventFullDto addEvent(Long userId, NewEventDto newEventDto) {
         if (LocalDateTime.parse(newEventDto.getEventDate(), dateTimeFormatter).isBefore(LocalDateTime.now().plusHours(2))) {
@@ -132,7 +132,7 @@ public class EventServiceImpl implements EventService {
         List<EventShortDto> eventShortDto = eventRepository.findAllByInitiatorId(userId, page)
                 .stream()
                 .map(EventMapper::toEventShortDto).collect(Collectors.toList());
-        if(eventShortDto.isEmpty()) {
+        if (eventShortDto.isEmpty()) {
             return Collections.emptyList();
         }
         return eventShortDto;
@@ -141,7 +141,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto findEventByUserId(Long userId, Long eventId) {
         Event event = validatedEvent(eventId);
-        if(!event.getInitiator().getId().equals(userId)) {
+        if (!event.getInitiator().getId().equals(userId)) {
          throw new IllegalArgumentException(String.format("Запрашиваемое событие не принадлежит полльзовутелю с id=%d", userId));
         }
         return EventMapper.toEventFullDto(event);
@@ -255,8 +255,7 @@ public class EventServiceImpl implements EventService {
         if (end.isBefore(LocalDateTime.now()) || end.isBefore(start)) {
             throw new ValidationException("Неправильный запрос");
         }
-        List<Event> events = eventRepository.searchEventsByAnnotationContainsOrDescriptionContainsAndCategoryIdInAndPaidAndCreatedOnBetween
-                (text, text, categories, paid, startLocal, endLocal, page).stream()
+        List<Event> events = eventRepository.searchEventsByAnnotationContainsOrDescriptionContainsAndCategoryIdInAndPaidAndCreatedOnBetween(text, text, categories, paid, startLocal, endLocal, page).stream()
                 .filter(event -> event.getParticipantLimit() > event.getConfirmedRequests()).collect(Collectors.toList());
         if (sortParam.equals("EVENT_DATE")) {
             events = events.stream().sorted(Comparator.comparing(Event::getEventDate)).collect(Collectors.toList());

@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 @UtilityClass
 public class RequestMapper {
-    DateTimeFormatter DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static Request toRequest(ParticipationRequestDto participationRequestDto, Event event, User user) {
         return Request.builder()
@@ -37,7 +37,7 @@ public class RequestMapper {
                 .event(request.getEvent().getId())
                 .requester(request.getRequester().getId())
                 .status(request.getStatus().toString())
-                .created(DATE.format(request.getCreated()))
+                .created(formatter.format(request.getCreated()))
                 .build();
     }
 }

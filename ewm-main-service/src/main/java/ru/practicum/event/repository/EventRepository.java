@@ -47,11 +47,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> getEventByInitiatorInAndStateInAndCategoryInAndEventDateBetween(List<User> users, List<EventState> states, List<Category> categories, LocalDateTime start, LocalDateTime end, PageRequest pageRequest);
 
     List<Event> findByInitiatorIdInAndStateInAndCategoryIdInAndEventDateBetween(List<Long> users, List<EventState> states, List<Long> categories, LocalDateTime start, LocalDateTime end, PageRequest pageRequest);
-    List<Event> searchEventsByAnnotationContainsOrDescriptionContainsAndCategoryIdInAndPaidAndCreatedOnBetween
-            (String annotation, String description, Collection<Long> categoryId, Boolean paid, LocalDateTime start, LocalDateTime end, PageRequest pageRequest);
 
-
+    List<Event> searchEventsByAnnotationContainsOrDescriptionContainsAndCategoryIdInAndPaidAndCreatedOnBetween(String annotation, String description, Collection<Long> categoryId, Boolean paid, LocalDateTime start, LocalDateTime end, PageRequest pageRequest);
 
     Optional<Event> findByCategory(Category category);
+
     List<Event> findAllByIdIn(List<Long> id);
 }
