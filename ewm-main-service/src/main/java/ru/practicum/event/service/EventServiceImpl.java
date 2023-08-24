@@ -31,7 +31,6 @@ import ru.practicum.user.service.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -188,7 +187,6 @@ public class EventServiceImpl implements EventService {
         Sort sortByDate = Sort.by(Sort.Direction.ASC, "id");
         PageRequest page = PageRequest.of(from / size, size,sortByDate);
         LocalDateTime start;
-        List<EventState> newStates = new ArrayList<>();
         if (users.isEmpty()) {
             users = userRepository.findAll().stream().map(User::getId).collect(Collectors.toList());
         }
