@@ -190,13 +190,6 @@ public class EventServiceImpl implements EventService {
         if (users.isEmpty()) {
             users = userRepository.findAll().stream().map(User::getId).collect(Collectors.toList());
         }
-        if (categories.isEmpty()) {
-            categories = categoryRepository.findAll().stream().map(Category::getId).collect(Collectors.toList());
-        }
-        if (states.isEmpty()) {
-
-            states = List.of(EventState.PUBLISHED, EventState.CANCELED,EventState.PENDING);
-        }
         if (startLocal != null) {
             start = startLocal;
         } else {
@@ -212,20 +205,8 @@ public class EventServiceImpl implements EventService {
             throw new IllegalArgumentException("Неправильный запрос");
         }
 
+       List<Event> events = eventRepository.findByInitiatorIdIn(users, page);
 
-        List<User> foundUsers =  users.stream().map(userService::validateUser).collect(Collectors.toList());
-       List<Category> foundCat = categories.stream().map(categoryService::validateCategory).collect(Collectors.toList());
-
-       List<Event> events = eventRepository.findByInitiatorIdInAndStateInAndCategoryIdInAndEventDateBetween(users, states, categories, start, end, page);
-      List<EventFullDto> eventFullDtoList = events.stream()
-                .map(EventMapper::toEventFullDto)
-                .collect(Collectors.toList());
-      log.info("Просмотр полный {}", eventFullDtoList);
-      log.info("Просмотр Eventov {}", events);
-
-        /*
-        List<Event> events = eventRepository.findAllByAdmin(users,states,categories,start,end,page);
-*/
         return events.stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
     }
 
@@ -234,7 +215,7 @@ public class EventServiceImpl implements EventService {
                                                    LocalDateTime startLocal, LocalDateTime endLocal, Boolean onlyAvailable,
                                                    String sortParam, Integer from, Integer size, HttpServletRequest request) {
         Sort sortByDate = Sort.by(Sort.Direction.ASC, "id");
-        Integer index = from / size;
+        Integer index = from  / size;
         PageRequest page = PageRequest.of(index, size, sortByDate);
         LocalDateTime start;
 
@@ -278,8 +259,8 @@ public class EventServiceImpl implements EventService {
             throw new ObjectNotFoundException("Событие не опубликовано");
         }
         client.postHit(request.getRequestURI(), request.getRemoteAddr());
-      event.setViews(client.getViews(request.getRequestURI()));
-      eventRepository.save(event);
+        event.setViews(client.getViews(request.getRequestURI()));
+        eventRepository.save(event);
         return EventMapper.toEventFullDto(event);
     }
 

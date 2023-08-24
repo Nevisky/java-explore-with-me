@@ -45,20 +45,19 @@ public class StatsClient {
             log.error("error", ex);
             throw new RuntimeException("Error in Stats service");
         }
-
-
     }
 
     public Long getViews(String uri) {
         List<String> uris = new ArrayList<>();
         uris.add(uri);
-        long views = 0L;
+        Long views = 0L;
+
 
         try {
             List<HitResponseDto> response = mapper.convertValue(restTemplate.getForObject("/stats?start=" + START + "&end=" + END + "&uris=" + uri + "&unique=true", List.class), new TypeReference<List<HitResponseDto>>() {});
             log.info("response = {}", response);
             log.info("1stats = {}", response.get(0));
-            views = (long) response.get(0).getHits();
+            views = Long.valueOf(response.get(0).getHits());
         } catch (Exception ex) {
             log.error("error", ex);
             throw new RuntimeException("Error in Stats service");

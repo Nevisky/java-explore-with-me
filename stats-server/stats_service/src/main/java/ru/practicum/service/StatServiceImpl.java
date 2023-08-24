@@ -74,10 +74,10 @@ public class StatServiceImpl implements StatService {
             log.info("Сколько было запросов {}", uris);
         }
         List<HitResponseDto> listDTO = new ArrayList<>();
-        List<Hit> urisToListUnique;
+        List<String> urisToListUnique;
         List<String> urisToList;
         if (unique) {
-            urisToListUnique = statRepository.findDistinctByUriNotInAndTimestampBetween(uris, from, to);
+            urisToListUnique = statRepository.findUriByUniqueIp(uris, from, to);
             for (String uri : uris) {
                 HitResponseDto statsDTO = new HitResponseDto("ewm-main-service", uri, Collections.frequency(urisToListUnique, uri));
                 listDTO.add(statsDTO);

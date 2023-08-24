@@ -13,8 +13,12 @@ public interface StatRepository extends JpaRepository<Hit, Long> {
     @Query("select distinct s.uri " +
             "from Hit as s")
     List<String> getDistinctUri();
-
-    List<Hit> findDistinctByUriNotInAndTimestampBetween(List<String> uri, LocalDateTime from, LocalDateTime to);
+    @Query(value = "select t.uri " +
+            "from ( select distinct on (s.ip) s.uri from HITS as s " +
+            "where s.uri in (?1) " +
+            "and s.timestamp > ?2 and s.timestamp < ?3) as t",
+            nativeQuery = true)
+    List<String> findUriByUniqueIp(List<String> uri, LocalDateTime from, LocalDateTime to);
 
     @Query("select s.uri " +
             "from Hit as s " +
