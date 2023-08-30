@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS EVENT (
     request_moderation boolean NOT NULL,
     state varchar(50) NOT NULL ,
     title varchar(125) NOT NULL,
-    views bigint
 );
 
 CREATE TABLE IF NOT EXISTS REQUESTS (
