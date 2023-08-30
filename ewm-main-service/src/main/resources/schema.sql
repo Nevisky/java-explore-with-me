@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS EVENT (
     published_on timestamp without time zone,
     request_moderation boolean NOT NULL,
     state varchar(50) NOT NULL,
-    title varchar(50) NOT NULL
+    title varchar(50) NOT NULL,
+    views bigint NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS REQUESTS (

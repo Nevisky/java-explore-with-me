@@ -19,8 +19,10 @@ public class HitDto {
 
     @NotBlank
     String app;
+
     @NotBlank
     String uri;
+
     @NotBlank
     String ip;
 
