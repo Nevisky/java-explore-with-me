@@ -5,13 +5,13 @@ import ru.practicum.event.model.Event;
 import ru.practicum.request.dto.ParticipationRequestDto;
 import ru.practicum.request.model.Request;
 import ru.practicum.user.model.User;
-import ru.practicum.utility.DateFormat;
+import ru.practicum.utility.TimeUtil;
+
 
 import java.time.LocalDateTime;
 
 @UtilityClass
 public class RequestMapper {
-    DateFormat formatter;
 
     public static Request newRequest(Event event, User user) {
         return Request.builder()
@@ -27,7 +27,7 @@ public class RequestMapper {
                 .event(request.getEvent().getId())
                 .requester(request.getRequester().getId())
                 .status(request.getStatus().toString())
-                .created(formatter.getFormatter().format(request.getCreated()))
+                .created(TimeUtil.FORMATTER.format(request.getCreated()))
                 .build();
     }
 }

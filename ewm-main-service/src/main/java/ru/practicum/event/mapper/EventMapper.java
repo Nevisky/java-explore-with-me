@@ -8,14 +8,14 @@ import ru.practicum.event.dto.*;
 import ru.practicum.event.model.Event;
 import ru.practicum.user.mapper.UserMapper;
 import ru.practicum.user.model.User;
-import ru.practicum.utility.DateFormat;
+import ru.practicum.utility.TimeUtil;
 
 import java.time.LocalDateTime;
 
-@UtilityClass
 
+@UtilityClass
 public class EventMapper {
-    DateFormat formatter;
+
 
     public static Event toEvent(NewEventDto newEventDto, User user, Category category) {
         return Event.builder()
@@ -24,7 +24,7 @@ public class EventMapper {
                 .createdOn(LocalDateTime.now())
                 .publishedOn(LocalDateTime.now())
                 .description(newEventDto.getDescription())
-                .eventDate(LocalDateTime.parse(newEventDto.getEventDate(), formatter.getFormatter()))
+                .eventDate(LocalDateTime.parse(newEventDto.getEventDate(), TimeUtil.FORMATTER))
                 .location(newEventDto.getLocation())
                 .paid(newEventDto.getPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
@@ -40,14 +40,14 @@ public class EventMapper {
                     .annotation(event.getAnnotation())
                     .category(CategoryMapper.toCategoryDto(event.getCategory()))
                     .confirmedRequests(event.getConfirmedRequests())
-                    .createdOn(LocalDateTime.now().format(formatter.getFormatter()))
+                    .createdOn(LocalDateTime.now().format(TimeUtil.FORMATTER))
                     .description(event.getDescription())
-                    .eventDate(event.getEventDate().format(formatter.getFormatter()))
+                    .eventDate(event.getEventDate().format(TimeUtil.FORMATTER))
                     .initiator(UserMapper.toUserShortDto(event.getInitiator()))
                     .location(event.getLocation())
                     .paid(event.getPaid())
                     .participantLimit(event.getParticipantLimit())
-                    .publishedOn(event.getPublishedOn() == null ? "" : event.getPublishedOn().format(formatter.getFormatter()))
+                    .publishedOn(event.getPublishedOn() == null ? "" : event.getPublishedOn().format(TimeUtil.FORMATTER))
                     .requestModeration(event.getRequestModeration())
                     .state(event.getState().toString() == null ? "" : event.getState().toString())
                     .title(event.getTitle())
@@ -62,7 +62,7 @@ public class EventMapper {
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
                 .confirmedRequests(event.getConfirmedRequests())
-                .eventDate(event.getEventDate().format(formatter.getFormatter()))
+                .eventDate(event.getEventDate().format(TimeUtil.FORMATTER))
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
                 .paid(event.getPaid())
                 .title(event.getTitle())
@@ -97,16 +97,16 @@ public class EventMapper {
                 .annotation(updateEventAdminRequest.getAnnotation() != null ? updateEventAdminRequest.getAnnotation() : event.getAnnotation())
                 .category(categoryDto)
                 .description(updateEventAdminRequest.getDescription() != null ? updateEventAdminRequest.getDescription() : event.getDescription())
-                .eventDate(updateEventAdminRequest.getEventDate() != null ? updateEventAdminRequest.getEventDate() : (formatter.getFormatter().format(event.getEventDate())))
+                .eventDate(updateEventAdminRequest.getEventDate() != null ? updateEventAdminRequest.getEventDate() : (TimeUtil.FORMATTER.format(event.getEventDate())))
                 .location(updateEventAdminRequest.getLocation() != null ? updateEventAdminRequest.getLocation() : event.getLocation())
                 .paid(updateEventAdminRequest.getPaid() != null ? updateEventAdminRequest.getPaid() : event.getPaid())
                 .participantLimit(updateEventAdminRequest.getParticipantLimit() != null ? updateEventAdminRequest.getParticipantLimit() : event.getParticipantLimit())
                 .requestModeration(updateEventAdminRequest.getRequestModeration() != null ? updateEventAdminRequest.getRequestModeration() : event.getRequestModeration())
                 .title(updateEventAdminRequest.getTitle() != null ? updateEventAdminRequest.getTitle() : event.getTitle())
                 .confirmedRequests(event.getConfirmedRequests())
-                .createdOn(formatter.getFormatter().format(event.getCreatedOn()))
+                .createdOn(TimeUtil.FORMATTER.format(event.getCreatedOn()))
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
-                .publishedOn(formatter.getFormatter().format(event.getPublishedOn()))
+                .publishedOn(TimeUtil.FORMATTER.format(event.getPublishedOn()))
                 .views(event.getViews())
                 .build();
     }

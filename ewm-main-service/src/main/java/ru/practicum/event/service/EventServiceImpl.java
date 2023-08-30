@@ -28,7 +28,7 @@ import ru.practicum.request.repository.RequestRepository;
 import ru.practicum.user.model.User;
 import ru.practicum.user.repository.UserRepository;
 import ru.practicum.user.service.UserServiceImpl;
-import ru.practicum.utility.DateFormat;
+import ru.practicum.utility.TimeUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -52,7 +52,7 @@ public class EventServiceImpl implements EventService {
     private final CategoryRepository categoryRepository;
     private final StatsClient client;
 
-    DateFormat formatter;
+
 
     @Override
     public Event validatedEvent(Long eventId) {
@@ -83,7 +83,7 @@ public class EventServiceImpl implements EventService {
             }
         }
         if (updateEventAdminRequest.getEventDate() != null) {
-            if (LocalDateTime.parse(updateEventAdminRequest.getEventDate(), formatter.getFormatter()).isBefore(event.getEventDate())) {
+            if (LocalDateTime.parse(updateEventAdminRequest.getEventDate(), TimeUtil.FORMATTER).isBefore(event.getEventDate())) {
                 throw new ValidationException("Неправильно указано время");
             }
         }
@@ -102,7 +102,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto addEvent(Long userId, NewEventDto newEventDto) {
-        if (LocalDateTime.parse(newEventDto.getEventDate(), formatter.getFormatter()).isBefore(LocalDateTime.now().plusHours(2))) {
+        if (LocalDateTime.parse(newEventDto.getEventDate(), TimeUtil.FORMATTER).isBefore(LocalDateTime.now().plusHours(2))) {
             throw new ValidationException("Неправильно указана дата");
         }
         if (newEventDto.getPaid() == null) {
@@ -155,7 +155,7 @@ public class EventServiceImpl implements EventService {
         User user = userService.validateUser(userId);
         Event event = validatedEvent(eventId, userId);
         if (updateEventUserRequest.getEventDate() != null) {
-            if (LocalDateTime.parse(updateEventUserRequest.getEventDate(), formatter.getFormatter()).isBefore(event.getEventDate())) {
+            if (LocalDateTime.parse(updateEventUserRequest.getEventDate(), TimeUtil.FORMATTER).isBefore(event.getEventDate())) {
                 throw new ValidationException("Неправильно указано время");
             }
         }

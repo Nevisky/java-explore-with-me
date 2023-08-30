@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS EVENT (
     participant_limit INT NOT NULL,
     published_on timestamp without time zone,
     request_moderation boolean NOT NULL,
-    state varchar(50) NOT NULL,
-    title varchar(50) NOT NULL,
+    state varchar(100) NOT NULL,
+    title varchar(256) NOT NULL,
     views bigint NOT NULL
 );
 
