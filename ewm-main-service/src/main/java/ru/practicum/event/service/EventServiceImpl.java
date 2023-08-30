@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
@@ -27,10 +28,10 @@ import ru.practicum.request.repository.RequestRepository;
 import ru.practicum.user.model.User;
 import ru.practicum.user.repository.UserRepository;
 import ru.practicum.user.service.UserServiceImpl;
+import ru.practicum.utility.DateFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,6 +40,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
@@ -50,7 +52,7 @@ public class EventServiceImpl implements EventService {
     private final CategoryRepository categoryRepository;
     private final StatsClient client;
 
-    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateFormat formatter;
 
     @Override
     public Event validatedEvent(Long eventId) {
@@ -81,7 +83,7 @@ public class EventServiceImpl implements EventService {
             }
         }
         if (updateEventAdminRequest.getEventDate() != null) {
-            if (LocalDateTime.parse(updateEventAdminRequest.getEventDate(), dateTimeFormatter).isBefore(event.getEventDate())) {
+            if (LocalDateTime.parse(updateEventAdminRequest.getEventDate(), formatter.getFormatter()).isBefore(event.getEventDate())) {
                 throw new ValidationException("Неправильно указано время");
             }
         }
@@ -100,7 +102,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto addEvent(Long userId, NewEventDto newEventDto) {
-        if (LocalDateTime.parse(newEventDto.getEventDate(), dateTimeFormatter).isBefore(LocalDateTime.now().plusHours(2))) {
+        if (LocalDateTime.parse(newEventDto.getEventDate(), formatter.getFormatter()).isBefore(LocalDateTime.now().plusHours(2))) {
             throw new ValidationException("Неправильно указана дата");
         }
         if (newEventDto.getPaid() == null) {
@@ -125,6 +127,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventShortDto> findAllEventsByUserId(Long userId, int from, int size) {
         PageRequest page = PageRequest.of(from / size, size);
         userService.validateUser(userId);
@@ -138,6 +141,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EventFullDto findEventByUserId(Long userId, Long eventId) {
         Event event = validatedEvent(eventId);
         if (!event.getInitiator().getId().equals(userId)) {
@@ -151,7 +155,7 @@ public class EventServiceImpl implements EventService {
         User user = userService.validateUser(userId);
         Event event = validatedEvent(eventId, userId);
         if (updateEventUserRequest.getEventDate() != null) {
-            if (LocalDateTime.parse(updateEventUserRequest.getEventDate(), dateTimeFormatter).isBefore(event.getEventDate())) {
+            if (LocalDateTime.parse(updateEventUserRequest.getEventDate(), formatter.getFormatter()).isBefore(event.getEventDate())) {
                 throw new ValidationException("Неправильно указано время");
             }
         }
@@ -182,6 +186,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventFullDto> getAllEvents(List<Long> users, List<EventState> states, List<Long> categories,
                                             LocalDateTime startLocal, LocalDateTime endLocal, Integer from, Integer size) {
         Sort sortByDate = Sort.by(Sort.Direction.ASC, "id");
@@ -211,6 +216,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EventShortDto> findAllEventsByText(String text, List<Long> categories, Boolean paid,
                                                    LocalDateTime startLocal, LocalDateTime endLocal, Boolean onlyAvailable,
                                                    String sortParam, Integer from, Integer size, HttpServletRequest request) {
@@ -252,6 +258,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EventFullDto findEventById(Long eventId, HttpServletRequest request) {
 
         Event event = validatedEvent(eventId);
@@ -265,6 +272,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ParticipationRequestDto> findInfoRequestByEvent(Long userId, Long eventId) {
         return requestRepository.findByEventId(eventId)
                 .stream().map(RequestMapper::toParticipationRequestDto).collect(Collectors.toList());

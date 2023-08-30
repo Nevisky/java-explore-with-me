@@ -1,6 +1,7 @@
 package ru.practicum.compilation.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.event.dto.EventShortDto;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationDto {
 
     private Long id;

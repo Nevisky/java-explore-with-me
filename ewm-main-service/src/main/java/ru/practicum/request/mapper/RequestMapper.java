@@ -4,24 +4,14 @@ import lombok.experimental.UtilityClass;
 import ru.practicum.event.model.Event;
 import ru.practicum.request.dto.ParticipationRequestDto;
 import ru.practicum.request.model.Request;
-import ru.practicum.request.util.RequestStatus;
 import ru.practicum.user.model.User;
+import ru.practicum.utility.DateFormat;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @UtilityClass
 public class RequestMapper {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    public static Request toRequest(ParticipationRequestDto participationRequestDto, Event event, User user) {
-        return Request.builder()
-                .event(event)
-                .requester(user)
-                .status(RequestStatus.changeStringToState(participationRequestDto.getStatus()))
-                .created(LocalDateTime.parse(participationRequestDto.getCreated()))
-                .build();
-    }
+    DateFormat formatter;
 
     public static Request newRequest(Event event, User user) {
         return Request.builder()
@@ -37,7 +27,7 @@ public class RequestMapper {
                 .event(request.getEvent().getId())
                 .requester(request.getRequester().getId())
                 .status(request.getStatus().toString())
-                .created(formatter.format(request.getCreated()))
+                .created(formatter.getFormatter().format(request.getCreated()))
                 .build();
     }
 }

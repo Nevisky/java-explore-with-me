@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
 
     @Override
-    @Transactional
     public Compilation addCompilation(Compilation compilation) {
         if (compilation.getEvents() != null && !compilation.getEvents().isEmpty())
             compilation.setEvents(new HashSet<>(eventRepository.findAllByIdIn(compilation.getEvents().stream()
@@ -33,14 +33,12 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional
     public void removeCompilation(Long compilationId) {
         Compilation compilation = findCompilation(compilationId);
         compilationRepository.delete(compilation);
     }
 
     @Override
-    @Transactional
     public Compilation updateCompilation(Long compilationId, Compilation compilation) {
         Compilation currentCompilation = findCompilation(compilationId);
         if (compilation.getTitle() != null)

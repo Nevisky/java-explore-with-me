@@ -1,6 +1,7 @@
 package ru.practicum.event.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.validator.constraints.Length;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.location.model.Location;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventFullDto {
 
     @Size(max = 2001, min = 20)

@@ -1,6 +1,7 @@
 package ru.practicum.event.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.location.model.Location;
 
 import javax.validation.constraints.NotBlank;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 @ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewEventDto {
 
     @Size(max = 2000, min = 20)

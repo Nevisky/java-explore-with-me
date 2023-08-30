@@ -6,38 +6,16 @@ import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.model.Event;
-import ru.practicum.event.util.EventState;
 import ru.practicum.user.mapper.UserMapper;
 import ru.practicum.user.model.User;
+import ru.practicum.utility.DateFormat;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @UtilityClass
 
 public class EventMapper {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    public static Event toEvent(EventFullDto eventFullDto, User user, EventState state) {
-        return Event.builder()
-                .id(eventFullDto.getId())
-                .annotation(eventFullDto.getAnnotation())
-                .category(CategoryMapper.toCategory(eventFullDto.getCategory()))
-                .confirmedRequests(eventFullDto.getConfirmedRequests())
-                .createdOn(LocalDateTime.parse(eventFullDto.getCreatedOn(), formatter))
-                .description(eventFullDto.getDescription())
-                .eventDate(LocalDateTime.parse(eventFullDto.getEventDate(), formatter))
-                .initiator(user)
-                .location(eventFullDto.getLocation())
-                .paid(eventFullDto.getPaid())
-                .participantLimit(eventFullDto.getParticipantLimit())
-                .publishedOn(LocalDateTime.parse(eventFullDto.getPublishedOn(),formatter))
-                .requestModeration(eventFullDto.getRequestModeration())
-                .state(state)
-                .title(eventFullDto.getTitle())
-                .views(eventFullDto.getViews())
-                .build();
-    }
+    DateFormat formatter;
 
     public static Event toEvent(NewEventDto newEventDto, User user, Category category) {
         return Event.builder()
@@ -46,7 +24,7 @@ public class EventMapper {
                 .createdOn(LocalDateTime.now())
                 .publishedOn(LocalDateTime.now())
                 .description(newEventDto.getDescription())
-                .eventDate(LocalDateTime.parse(newEventDto.getEventDate(), formatter))
+                .eventDate(LocalDateTime.parse(newEventDto.getEventDate(), formatter.getFormatter()))
                 .location(newEventDto.getLocation())
                 .paid(newEventDto.getPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
@@ -62,14 +40,14 @@ public class EventMapper {
                     .annotation(event.getAnnotation())
                     .category(CategoryMapper.toCategoryDto(event.getCategory()))
                     .confirmedRequests(event.getConfirmedRequests())
-                    .createdOn(LocalDateTime.now().format(formatter))
+                    .createdOn(LocalDateTime.now().format(formatter.getFormatter()))
                     .description(event.getDescription())
-                    .eventDate(event.getEventDate().format(formatter))
+                    .eventDate(event.getEventDate().format(formatter.getFormatter()))
                     .initiator(UserMapper.toUserShortDto(event.getInitiator()))
                     .location(event.getLocation())
                     .paid(event.getPaid())
                     .participantLimit(event.getParticipantLimit())
-                    .publishedOn(event.getPublishedOn() == null ? "" : event.getPublishedOn().format(formatter))
+                    .publishedOn(event.getPublishedOn() == null ? "" : event.getPublishedOn().format(formatter.getFormatter()))
                     .requestModeration(event.getRequestModeration())
                     .state(event.getState().toString() == null ? "" : event.getState().toString())
                     .title(event.getTitle())
@@ -84,7 +62,7 @@ public class EventMapper {
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
                 .confirmedRequests(event.getConfirmedRequests())
-                .eventDate(event.getEventDate().format(formatter))
+                .eventDate(event.getEventDate().format(formatter.getFormatter()))
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
                 .paid(event.getPaid())
                 .title(event.getTitle())
@@ -119,16 +97,16 @@ public class EventMapper {
                 .annotation(updateEventAdminRequest.getAnnotation() != null ? updateEventAdminRequest.getAnnotation() : event.getAnnotation())
                 .category(categoryDto)
                 .description(updateEventAdminRequest.getDescription() != null ? updateEventAdminRequest.getDescription() : event.getDescription())
-                .eventDate(updateEventAdminRequest.getEventDate() != null ? updateEventAdminRequest.getEventDate() : (formatter.format(event.getEventDate())))
+                .eventDate(updateEventAdminRequest.getEventDate() != null ? updateEventAdminRequest.getEventDate() : (formatter.getFormatter().format(event.getEventDate())))
                 .location(updateEventAdminRequest.getLocation() != null ? updateEventAdminRequest.getLocation() : event.getLocation())
                 .paid(updateEventAdminRequest.getPaid() != null ? updateEventAdminRequest.getPaid() : event.getPaid())
                 .participantLimit(updateEventAdminRequest.getParticipantLimit() != null ? updateEventAdminRequest.getParticipantLimit() : event.getParticipantLimit())
                 .requestModeration(updateEventAdminRequest.getRequestModeration() != null ? updateEventAdminRequest.getRequestModeration() : event.getRequestModeration())
                 .title(updateEventAdminRequest.getTitle() != null ? updateEventAdminRequest.getTitle() : event.getTitle())
                 .confirmedRequests(event.getConfirmedRequests())
-                .createdOn(formatter.format(event.getCreatedOn()))
+                .createdOn(formatter.getFormatter().format(event.getCreatedOn()))
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
-                .publishedOn(formatter.format(event.getPublishedOn()))
+                .publishedOn(formatter.getFormatter().format(event.getPublishedOn()))
                 .views(event.getViews())
                 .build();
     }

@@ -1,6 +1,7 @@
 package ru.practicum.compilation.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewCompilationDto {
 
     private Boolean pinned;

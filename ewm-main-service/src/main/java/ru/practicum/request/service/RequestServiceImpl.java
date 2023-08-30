@@ -94,6 +94,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ParticipationRequestDto> findInformationAboutRequestByCurrentUser(Long userId) {
         return requestRepository.findAllByRequesterId(userId)
                 .stream()

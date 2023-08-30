@@ -1,6 +1,7 @@
 package ru.practicum.event.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.location.model.Location;
 
 import javax.validation.constraints.Size;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateEventUserRequest {
 
     @Size(max = 2000, min = 20)
