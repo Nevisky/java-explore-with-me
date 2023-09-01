@@ -1,61 +1,68 @@
 package ru.practicum.client;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.HitDto;
-
-import java.time.LocalDateTime;
+import ru.practicum.HitResponseDto;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
-@Service
-public class StatsClient extends BaseClient {
+@Component
+@Slf4j
+public class StatsClient {
+    private  final RestTemplate restTemplate;
+    ObjectMapper mapper = new  ObjectMapper();
 
+    public static final String START = "2000-01-01 01:01:01";
 
-    @Autowired
-    public StatsClient(@Value("${SPRING_DATASOURCE_URL}") String serverUrl, RestTemplateBuilder builder) {
-        super(
-                builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
-                        .requestFactory(HttpComponentsClientHttpRequestFactory::new)
-                        .build()
-        );
+    public static final String END = "3000-01-01 01:01:01";
+
+    public StatsClient(RestTemplateBuilder builder) {
+        this.restTemplate = builder
+                .uriTemplateHandler(new DefaultUriBuilderFactory("http://stats-server:9090"))
+                .build();
     }
 
-    public ResponseEntity<Object> saveEvent(HitDto hitDto) {
-        return post("/hit", hitDto);
+    public void postHit(String uri, String ip) {
+        String app = "ewm-main-service";
+        HitDto hitDto = HitDto.builder()
+                .app(app)
+                .uri(uri)
+                .ip(ip)
+                .build();
+        try {
+            HitDto response = restTemplate.postForObject("/hit", hitDto, HitDto.class);
+            log.info("response: " + response);
+        } catch (Exception ex) {
+            log.error("error", ex);
+            throw new RuntimeException("Error in Stats service");
+        }
     }
 
-    public ResponseEntity<Object> getAllStatistic(LocalDateTime start, LocalDateTime end, Boolean unique, List<String> uris) {
-        Map<String, Object> parameters = Map.of(
-                "start", start,
-                "end", end,
-                "uris", uris,
-                "unique", unique);
-        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
-    }
+    public Long getViews(String uri) {
+        List<String> uris = new ArrayList<>();
+        uris.add(uri);
+        Long views = 0L;
 
-    public ResponseEntity<Object> getStatisticWithUniqueIps(LocalDateTime start, LocalDateTime end, Boolean unique) {
-        Map<String, Object> parameters = Map.of(
-                "start", start,
-                "end", end,
-                "unique", unique);
-        return get("/stats?start={start}&end={end}&unique={unique}", parameters);
-    }
 
-    public ResponseEntity<Object> getStatisticWithOnlyUris(LocalDateTime start, LocalDateTime end, List<String> uris) {
-        Map<String, Object> parameters = Map.of(
-                "start", start,
-                "end", end,
-                "uris", uris);
-        return get("/stats?start={start}&end={end}&uris={uris}", parameters);
+        try {
+            List<HitResponseDto> response = mapper.convertValue(restTemplate.getForObject("/stats?start=" + START + "&end=" + END + "&uris=" + uri + "&unique=true", List.class), new TypeReference<List<HitResponseDto>>() {});
+            log.info("response = {}", response);
+            log.info("1stats = {}", response.get(0));
+            views = Long.valueOf(response.get(0).getHits());
+        } catch (Exception ex) {
+            log.error("error", ex);
+            throw new RuntimeException("Error in Stats service");
+        }
+        return views;
     }
 
 }

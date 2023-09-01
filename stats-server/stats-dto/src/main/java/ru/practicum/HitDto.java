@@ -12,14 +12,17 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString
 public class HitDto {
 
     Long id;
 
     @NotBlank
     String app;
+
     @NotBlank
     String uri;
+
     @NotBlank
     String ip;
 
