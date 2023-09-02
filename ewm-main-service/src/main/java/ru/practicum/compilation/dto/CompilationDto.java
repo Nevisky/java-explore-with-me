@@ -15,12 +15,12 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationDto {
 
-    private Long id;
+    Long id;
 
-    private boolean pinned;
+    boolean pinned;
 
-    private String title;
+    String title;
 
-    private List<EventShortDto> events;
+    List<EventShortDto> events;
 
 }
