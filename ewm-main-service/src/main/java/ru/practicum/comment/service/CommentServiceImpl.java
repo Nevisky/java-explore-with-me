@@ -61,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
         Event event = eventService.validatedEvent(eventId);
         eventService.validatedEvent(eventId);
         Comment comment = validateComment(commentId);
-        if (userId != comment.getAuthor().getId()) {
+        if (!userId.equals(comment.getAuthor().getId())) {
             throw new ObjectNotFoundException("Вы не явлетесь автором комментария");
         }
         Comment updatedComment = commentRepository.save(CommentMapper.toCommentUpdated(commentDto, comment, user, event));
