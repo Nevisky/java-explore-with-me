@@ -34,6 +34,7 @@ public class PrivateCommentController {
             @PathVariable Long eventId,
             @PathVariable Long commentId,
             @Valid @RequestBody CommentDto commentDto) {
+        log.info("Создан запрос на обновление комментария с id = {}", commentId);
         return commentService.updateComment(userId, eventId, commentId, commentDto);
     }
 
@@ -42,6 +43,7 @@ public class PrivateCommentController {
     public void removeComment(@RequestParam Long userId,
                               @PathVariable Long eventId,
                               @PathVariable Long commentId) {
+        log.info("Создан запрос на удаление комментария с id = {}", commentId);
         commentService.deleteComment(userId, eventId, commentId);
     }
 
@@ -49,6 +51,7 @@ public class PrivateCommentController {
     public List<CommentDto> findAllCommentsByEvent(@PathVariable Long eventId,
                                                    @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                                    @Positive @RequestParam(defaultValue = "10") Integer size) {
+        log.info("Создан запрос на получение всех комментарий события с id = {}", eventId);
        return commentService.findAllCommentsByEvent(eventId, from, size);
     }
 }

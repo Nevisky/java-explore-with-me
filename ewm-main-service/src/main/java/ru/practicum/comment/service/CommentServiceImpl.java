@@ -85,6 +85,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CommentDto> findAllCommentsByEvent(Long eventId, Integer from, Integer size) {
         PageRequest page = PageRequest.of(from / size, size);
         List<Comment> commentList = commentRepository.findAllByEventId(eventId, page);

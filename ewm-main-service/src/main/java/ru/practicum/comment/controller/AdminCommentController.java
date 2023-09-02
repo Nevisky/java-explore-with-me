@@ -17,6 +17,7 @@ public class AdminCommentController {
     @DeleteMapping("{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeComment(@PathVariable Long commentId) {
+        log.info("Создан запрос на удаление комментария администратором");
         commentService.deleteCommentByAdmin(commentId);
     }
 }
