@@ -13,6 +13,7 @@ import ru.practicum.comment.service.CommentService;
 public class AdminCommentController {
 
     private final CommentService commentService;
+
     @DeleteMapping("{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeComment(@PathVariable Long commentId) {

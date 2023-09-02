@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface RequestService {
     ParticipationRequestDto addRequestByCurrentUser(Long userId, Long eventId);
+
     Request validateRequest(Long requestId);
 
     ParticipationRequestDto patchRequestByCurrentUser(Long userId, Long requestId);
