@@ -23,6 +23,7 @@ public class RequestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto addRequestByCurrentUser(@PathVariable("userId") Long userId,
                                                            @RequestParam Long eventId) {
+        log.info("Создан запрос на участе в событии c id {} от пользователя с id {}", userId, eventId);
     return requestService.addRequestByCurrentUser(userId, eventId);
 }
 

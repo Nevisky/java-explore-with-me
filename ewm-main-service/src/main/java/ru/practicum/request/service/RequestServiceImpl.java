@@ -36,6 +36,7 @@ public class RequestServiceImpl implements RequestService {
     private final RequestRepository requestRepository;
     public final EventRepository eventRepository;
 
+    @Override
     public Request validateRequest(Long requestId) {
         return requestRepository.findById(requestId).orElseThrow(
                 () -> new ObjectNotFoundException(String.format("Запроса на участие с id = %d не существует", requestId)));
